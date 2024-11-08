@@ -1,8 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Use the localized pricingWidgetData provided by PHP
     const pricingData = pricingWidgetData;
-
-    const formatCurrency = (value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(value);
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(value);
+    };
 
     document.querySelectorAll('.pricing-widget').forEach(widget => {
         const numberOfEmployees = widget.querySelector('#numberOfEmployees');
@@ -12,24 +17,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Function to update the available employee options based on billing cycle
         const updateAvailableOptions = () => {
-            const selectedCycle = [...billingCycleInputs].find(input => input.checked).value;
-
-            // Loop over employee options and disable if the selected billing cycle is inactive
-            [...numberOfEmployees.options].forEach(option => {
-                const employeeRange = option.value;
-                const isCycleActive = pricingData[employeeRange] && pricingData[employeeRange][`${selectedCycle}_active`];
-
-                option.disabled = !isCycleActive && pricingData[employeeRange][selectedCycle] !== 'Custom';
-            });
-
-            // Disable billing cycle options based on active status for selected employee range
             const selectedEmployeeRange = numberOfEmployees.value;
+
+            console.log("Selected Employee Range:", selectedEmployeeRange);
+
+            // Check if pricing data exists for the selected employee range
+            if (!pricingData[selectedEmployeeRange]) {
+                console.warn(`No pricing data found for selected employee range: ${selectedEmployeeRange}`);
+                billingCycleInputs.forEach(input => input.disabled = true); // Disable all billing options if range is not found
+                return;
+            }
+
+            // Update billing cycle radio buttons based on the selected employee range's active status
             billingCycleInputs.forEach(input => {
-                const isBillingActive = pricingData[selectedEmployeeRange] && pricingData[selectedEmployeeRange][`${input.value}_active`];
-                input.disabled = !isBillingActive && pricingData[selectedEmployeeRange][input.value] !== 'Custom';
+                const cycle = input.value; // 'monthly', 'quarterly', or 'annually'
+                
+                // Check if this billing cycle is active for the selected employee range
+                const isBillingActive = pricingData[selectedEmployeeRange][`${cycle}_active`] === "on" || pricingData[selectedEmployeeRange][`${cycle}_active`] === true;
+
+                // Disable the billing cycle option if it is explicitly inactive
+                input.disabled = !isBillingActive;
+
+                console.log(`Billing Cycle: ${cycle}, Active for ${selectedEmployeeRange}:`, isBillingActive, "| Disabled:", input.disabled);
             });
         };
 
+        // Function to update the displayed price and discount
         const updatePrice = () => {
             if (!numberOfEmployees || !billingCycleInputs.length || !pricingTotal) return;
 
@@ -39,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (priceData === 'Custom' || !priceData) {
                 pricingTotal.textContent = "Custom";
+                pricingTotal.setAttribute('price', "Custom");
                 if (pricingComplete) pricingComplete.textContent = '';
                 return;
             }
@@ -65,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             pricingTotal.setAttribute('price', totalPrice);
         };
 
-        // Add event listeners for billing cycle changes and employee dropdown changes
+        // Event listeners to ensure updateAvailableOptions and updatePrice are called on every relevant change
         billingCycleInputs.forEach(input => {
             input.addEventListener('change', () => {
                 updateAvailableOptions();
@@ -73,7 +87,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        numberOfEmployees.addEventListener('change', updatePrice);
+        numberOfEmployees.addEventListener('change', () => {
+            updateAvailableOptions();
+            updatePrice();
+        });
 
         // Initial setup
         updateAvailableOptions();

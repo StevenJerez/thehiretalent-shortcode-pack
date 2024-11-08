@@ -29,10 +29,10 @@ function pricing_widget_settings_page() {
     <h1>Pricing Widget Settings</h1>
     <form method="post" action="options.php">
         <?php
-            // Display settings fields and save button
-            settings_fields('pricing_widget_settings');  // Make sure this matches the option group name in register_setting
-            do_settings_sections('pricing-widget-settings');
-            submit_button();
+                // Display settings fields and save button
+                settings_fields('pricing_widget_settings');  // Matches the option group name in register_setting
+                do_settings_sections('pricing-widget-settings');
+                submit_button();
             ?>
     </form>
 </div>
@@ -41,14 +41,12 @@ function pricing_widget_settings_page() {
 
 // Register settings, section, and fields
 function pricing_widget_register_settings() {
-    // Register the main settings option in the database
-    register_setting('pricing_widget_settings', 'pricing_widget_data');  // 'pricing_widget_options' is the options group
+    register_setting('pricing_widget_settings', 'pricing_widget_data');  // Register main settings
 
-    // Add a settings section
     add_settings_section(
         'pricing_widget_main_section',
         'Employee Range Pricing',
-        'pricing_widget_section_description',  // Optional callback for section description
+        'pricing_widget_section_description', // Optional callback for section description
         'pricing-widget-settings'
     );
 
@@ -103,6 +101,7 @@ function pricing_widget_render_field($args) {
     echo "<input type='checkbox' name='pricing_widget_data[$key][monthly_active]' $monthly_active /> Active</label><br>";
 }
 
+// Enqueue assets (CSS and JavaScript) once per page
 function pricing_widget_enqueue_assets() {
     static $loaded = false;
     if (!$loaded) {
@@ -118,6 +117,7 @@ function pricing_widget_enqueue_assets() {
         $loaded = true;
     }
 }
+add_action('wp_enqueue_scripts', 'pricing_widget_enqueue_assets'); // Hook to enqueue assets
 
 // Helper function to render individual sections
 function render_pricing_widget_section($section) {
