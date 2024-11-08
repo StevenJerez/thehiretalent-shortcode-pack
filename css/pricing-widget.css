@@ -1,0 +1,122 @@
+/* Pricing Widget Styles */
+.pricing-widget .pricing-total {
+    font-size: 56px;
+    font-family: "Sintony", sans-serif;
+    font-weight: 700;
+    color: #0B6F6B;
+    line-height: 1;
+}
+
+.pricing-widget .pricing-complete {
+    font-size: 14px;
+    color: #b0b0b0;
+    margin-bottom: 4px;
+    vertical-align: middle;
+    font-family: 'Sintony', sans-serif;
+    font-weight: 700;
+}
+
+.pricing-widget .pricing-complete span {
+    color: #0B6F6B;
+    font-weight: 700;
+    display: block;
+}
+
+.pricing-widget .pricing-total::after {
+    content: '/month';
+    font-size: 30px;
+}
+
+.pricing-widget .pricing-total[price="Custom"]::before,
+.pricing-widget .pricing-total[discount="$0"]::before {
+    content: '';
+}
+
+.pricing-widget .pricing-total[price="Custom"]::after {
+    content: '';
+}
+
+.pricing-widget select {
+    font-family: "Sintony", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 50px;
+    border: 1px solid #b0b0b0;
+    background-color: transparent;
+    color: #323232;
+    width: 100%;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.pricing-widget option:hover {
+    background-color: rgb(51, 178, 156);
+}
+
+.pricing-widget {
+    margin: 0 auto;
+}
+
+.pricing-widget #monthlyOrYearly {
+    display: flex;
+    justify-content: center;
+    border-radius: 50px;
+    border: 1px solid #14807e;
+    margin-bottom: 16px;
+    max-width: 330px;
+    margin: auto auto 16px;
+}
+
+.pricing-widget #monthlyOrYearly label {
+    border: none;
+    padding: 8px 12px;
+    background-color: transparent;
+    color: #24292e;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 13px;
+    width: 100%;
+    text-align: center;
+    font-family: "Sintony", sans-serif;
+}
+
+.pricing-widget #monthlyOrYearly label span {
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 4px;
+    color: #EA5353;
+    padding: 5px 8px;
+    border-radius: 50px;
+    background-color: #f7f7f7;
+    text-transform: uppercase;
+}
+
+.pricing-widget #monthlyOrYearly label:first-of-type {
+    border-radius: 50px;
+}
+
+.pricing-widget #monthlyOrYearly label:last-of-type {
+    border-radius: 50px;
+}
+
+.pricing-widget #monthlyOrYearly input[type="radio"] {
+    display: none;
+}
+
+.pricing-widget #monthlyOrYearly input[type="radio"]:checked+label {
+    background-color: #14807eb5;
+    color: white;
+}
+
+.pricing-widget #monthlyOrYearly input[type="radio"]:disabled+label {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pricing-widget .pricing-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: end;
+}
