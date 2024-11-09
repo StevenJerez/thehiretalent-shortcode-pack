@@ -1,105 +1,12 @@
 <?php
 /**
  * Plugin Name: Pricing Widget
- * Description: A shortcode-based pricing widget with flexible options to display multiple sections.
- * Version: 1.6
+ * Description: A shortcode-based pricing widget with flexible options to display individual sections or the full widget.
+ * Version: 1.3
  * Author: Your Name
  */
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
-
-// Add the settings page in the WordPress dashboard
-function pricing_widget_admin_menu() {
-    add_menu_page(
-        'Pricing Widget Settings',
-        'Pricing Widget',
-        'manage_options',
-        'pricing-widget-settings',
-        'pricing_widget_settings_page',
-        'dashicons-editor-table', // Icon for the menu item
-        100
-    );
-}
-add_action('admin_menu', 'pricing_widget_admin_menu');
-
-// Render the settings page
-function pricing_widget_settings_page() {
-    ?>
-<div class="wrap">
-    <h1>Pricing Widget Settings</h1>
-    <form method="post" action="options.php">
-        <?php
-                // Display settings fields and save button
-                settings_fields('pricing_widget_settings');  // Matches the option group name in register_setting
-                do_settings_sections('pricing-widget-settings');
-                submit_button();
-            ?>
-    </form>
-</div>
-<?php
-}
-
-// Register settings, section, and fields
-function pricing_widget_register_settings() {
-    register_setting('pricing_widget_settings', 'pricing_widget_data');  // Register main settings
-
-    add_settings_section(
-        'pricing_widget_main_section',
-        'Employee Range Pricing',
-        'pricing_widget_section_description', // Optional callback for section description
-        'pricing-widget-settings'
-    );
-
-    $ranges = [
-        '1-25' => '1 - 25 Employees',
-        '26-50' => '26 - 50 Employees',
-        '51-100' => '51 - 100 Employees',
-        '101-200' => '101 - 200 Employees',
-        '201-300' => '201 - 300 Employees',
-        '301-500' => '301 - 500 Employees',
-        '501-1000' => '501 - 1000 Employees',
-        '1000+' => '1000+ Employees',
-    ];
-
-    foreach ($ranges as $key => $label) {
-        add_settings_field(
-            "pricing_widget_{$key}",
-            $label,
-            'pricing_widget_render_field',
-            'pricing-widget-settings',
-            'pricing_widget_main_section',
-            ['key' => $key]
-        );
-    }
-}
-add_action('admin_init', 'pricing_widget_register_settings');
-
-// Optional section description
-function pricing_widget_section_description() {
-    echo '<p>Set pricing for each employee range and activate or deactivate specific billing cycles.</p>';
-}
-
-// Render the input fields for each employee range
-function pricing_widget_render_field($args) {
-    $key = $args['key'];
-    $options = get_option('pricing_widget_data');
-    $annual = esc_attr($options[$key]['annually'] ?? '');
-    $quarterly = esc_attr($options[$key]['quarterly'] ?? '');
-    $monthly = esc_attr($options[$key]['monthly'] ?? '');
-
-    $annual_active = isset($options[$key]['annually_active']) ? 'checked' : '';
-    $quarterly_active = isset($options[$key]['quarterly_active']) ? 'checked' : '';
-    $monthly_active = isset($options[$key]['monthly_active']) ? 'checked' : '';
-
-    echo "<label>Annually: <input type='text' name='pricing_widget_data[$key][annually]' value='$annual' />";
-    echo "<input type='checkbox' name='pricing_widget_data[$key][annually_active]' $annual_active /> Active</label><br>";
-
-    echo "<label>Quarterly: <input type='text' name='pricing_widget_data[$key][quarterly]' value='$quarterly' />";
-    echo "<input type='checkbox' name='pricing_widget_data[$key][quarterly_active]' $quarterly_active /> Active</label><br>";
-
-    echo "<label>Monthly: <input type='text' name='pricing_widget_data[$key][monthly]' value='$monthly' />";
-    echo "<input type='checkbox' name='pricing_widget_data[$key][monthly_active]' $monthly_active /> Active</label><br>";
-}
 
 // Enqueue assets (CSS and JavaScript) once per page
 function pricing_widget_enqueue_assets() {
@@ -110,21 +17,21 @@ function pricing_widget_enqueue_assets() {
 
         // Retrieve saved pricing data from the options
         $pricing_data = get_option('pricing_widget_data', []);
-        
+
         // Localize the pricing data for JavaScript
         wp_localize_script('pricing-widget-js', 'pricingWidgetData', $pricing_data);
 
         $loaded = true;
     }
 }
-add_action('wp_enqueue_scripts', 'pricing_widget_enqueue_assets'); // Hook to enqueue assets
+add_action('wp_enqueue_scripts', 'pricing_widget_enqueue_assets');
 
-// Helper function to render individual sections
+// Render sections of the pricing widget
 function render_pricing_widget_section($section) {
     switch ($section) {
         case 'billing':
             ?>
-<div id="monthlyOrYearly">
+<div id="monthlyOrYearly" class="pricing-widget-section billing-section">
     <input type="radio" id="annually" name="billingCycle" value="annually" checked>
     <label for="annually">Annually <span>Save 20%</span></label>
     <input type="radio" id="monthly" name="billingCycle" value="monthly">
@@ -135,7 +42,7 @@ function render_pricing_widget_section($section) {
 
         case 'employees':
             ?>
-<form action="">
+<form action="" class="pricing-widget-section employees-section">
     <select id="numberOfEmployees" name="numberOfEmployees">
         <option value="1-25">1 - 25 employees</option>
         <option value="26-50">26 - 50 employees</option>
@@ -152,13 +59,13 @@ function render_pricing_widget_section($section) {
 
         case 'pricing':
             ?>
-<div class="pricing-total">500</div>
+<div class="pricing-widget-section pricing-total">500</div>
 <?php
             break;
 
         case 'complete':
             ?>
-<div class="pricing-complete"></div>
+<div class="pricing-widget-section pricing-complete"></div>
 <?php
             break;
     }
@@ -173,46 +80,46 @@ function pricing_widget_shortcode($atts) {
         'section' => 'full', // Default to 'full'
     ), $atts, 'pricing_widget');
 
-    // Split sections into an array
-    $sections = array_map('trim', explode(',', $atts['section']));
-
     ob_start();
 
     echo '<div class="pricing-widget">';
 
-    // Check if "full" is specified, which includes all sections
+    // Split sections into an array
+    $sections = array_map('trim', explode(',', $atts['section']));
     $render_full_widget = in_array('full', $sections);
 
-    // Render the billing section only once
+    // Determine if the layout should include a pricing row
+    $has_pricing_row = $render_full_widget || in_array('employees', $sections) || in_array('pricing', $sections);
+
     if ($render_full_widget || in_array('billing', $sections)) {
         render_pricing_widget_section('billing');
     }
 
-    // Render employees and pricing within a row with separate columns if needed
-    if ($render_full_widget || (in_array('employees', $sections) && in_array('pricing', $sections))) {
+    // Render first pricing row with employees and pricing total
+    if ($has_pricing_row) {
         echo '<div class="pricing-row">';
+        
         echo '<div class="pricing-col">';
-        render_pricing_widget_section('employees');
-        render_pricing_widget_section('pricing');
-        echo '</div>';
-        echo '<div class="pricing-col">';
-        render_pricing_widget_section('complete');
-        echo '</div>';
-        echo '</div>';
-    } else {
-        // Render individual sections if not using the full widget or the combined row
-        if (in_array('employees', $sections)) {
+        if ($render_full_widget || in_array('employees', $sections)) {
             render_pricing_widget_section('employees');
         }
-        if (in_array('pricing', $sections)) {
+        if ($render_full_widget || in_array('pricing', $sections)) {
             render_pricing_widget_section('pricing');
         }
-        if (in_array('complete', $sections)) {
+        echo '</div>'; // End of first pricing row column
+        
+        // Render second pricing row with pricing complete
+        if ($render_full_widget || in_array('complete', $sections)) {
+            echo '<div class="pricing-col">';
             render_pricing_widget_section('complete');
+            echo '</div>'; // End of second pricing row column
         }
+
+        echo '</div>'; // End of first pricing row
     }
 
-    echo '</div>';
+
+    echo '</div>'; // End of main widget container
 
     return ob_get_clean();
 }

@@ -1,99 +1,103 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const pricingData = pricingWidgetData;
-    const formatCurrency = (value) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }).format(value);
-    };
+// Pricing data
+const pricingData = {
+    "1-25": { annually: 1400, quarterly: 382, monthly: 140 },
+    "26-50": { annually: 2990, quarterly: 815, monthly: 299 },
+    "51-100": { annually: 3990, quarterly: 1088, monthly: 399 },
+    "101-200": { annually: 5490, quarterly: 1497, monthly: 549 },
+    "201-300": { annually: 6490, quarterly: 1770, monthly: 649 },
+    "301-500": { annually: 7500, quarterly: 2045, monthly: 749 },
+    "501-1000": { annually: 11500, quarterly: 3136, monthly: 1149 },
+    "1000+": { annually: "Custom", quarterly: "Custom", monthly: "Custom" }
+};
 
-    document.querySelectorAll('.pricing-widget').forEach(widget => {
-        const numberOfEmployees = widget.querySelector('#numberOfEmployees');
-        const billingCycleInputs = widget.querySelectorAll('#monthlyOrYearly input[type="radio"]');
-        const pricingTotal = widget.querySelector('.pricing-total');
-        const pricingComplete = widget.querySelector('.pricing-complete');
+// Get elements
+const numberOfEmployees = document.getElementById('numberOfEmployees');
+const billingCycleInputs = document.querySelectorAll('#monthlyOrYearly input[type="radio"]');
+const pricingTotal = document.querySelector('.pricing-total');
+const pricingComplete = document.querySelector('.pricing-complete');
 
-        // Function to update the available employee options based on billing cycle
-        const updateAvailableOptions = () => {
-            const selectedEmployeeRange = numberOfEmployees.value;
+// Helper function to format prices in USD currency
+function formatCurrency(value) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(value);
+}
 
-            console.log("Selected Employee Range:", selectedEmployeeRange);
+// Function to calculate discount and total price based on billing cycle
+function getBillingDetails(employeeCount, billingCycle) {
+    const monthlyPrice = pricingData[employeeCount]['monthly'];
+    let totalPrice, displayedPrice, discount = 0;
 
-            // Check if pricing data exists for the selected employee range
-            if (!pricingData[selectedEmployeeRange]) {
-                console.warn(`No pricing data found for selected employee range: ${selectedEmployeeRange}`);
-                billingCycleInputs.forEach(input => input.disabled = true); // Disable all billing options if range is not found
-                return;
-            }
+    switch (billingCycle) {
+        case 'annually':
+            totalPrice = pricingData[employeeCount][billingCycle];
+            displayedPrice = Math.round(totalPrice / 12); // Rounded monthly equivalent for annual payment
+            discount = (monthlyPrice * 12) - totalPrice;
+            break;
+        case 'quarterly':
+            totalPrice = pricingData[employeeCount][billingCycle];
+            displayedPrice = Math.round(totalPrice / 3); // Rounded monthly equivalent for quarterly payment
+            discount = (monthlyPrice * 3) - totalPrice;
+            break;
+        case 'monthly':
+            totalPrice = monthlyPrice;
+            displayedPrice = monthlyPrice;
+            discount = 0;
+            break;
+    }
+    return { displayedPrice, totalPrice, discount };
+}
 
-            // Update billing cycle radio buttons based on the selected employee range's active status
-            billingCycleInputs.forEach(input => {
-                const cycle = input.value; // 'monthly', 'quarterly', or 'annually'
-                
-                // Check if this billing cycle is active for the selected employee range
-                const isBillingActive = pricingData[selectedEmployeeRange][`${cycle}_active`] === "on" || pricingData[selectedEmployeeRange][`${cycle}_active`] === true;
+// Function to update the displayed price and discount
+function updatePrice() {
+    const employeeCount = numberOfEmployees.value;
+    const billingCycle = [...billingCycleInputs].find(input => input.checked).value;
+    const priceData = pricingData[employeeCount][billingCycle];
 
-                // Disable the billing cycle option if it is explicitly inactive
-                input.disabled = !isBillingActive;
+    // Check for "Custom" pricing
+    if (priceData === 'Custom') {
+        pricingTotal.textContent = "Custom";
+        pricingComplete.textContent = '';
+        pricingTotal.setAttribute('price', 'Custom');
+        return;
+    }
 
-                console.log(`Billing Cycle: ${cycle}, Active for ${selectedEmployeeRange}:`, isBillingActive, "| Disabled:", input.disabled);
-            });
-        };
+    // Calculate billing details
+    let { displayedPrice, totalPrice, discount } = getBillingDetails(employeeCount, billingCycle);
 
-        // Function to update the displayed price and discount
-        const updatePrice = () => {
-            if (!numberOfEmployees || !billingCycleInputs.length || !pricingTotal) return;
+    // Format and display prices
+    pricingTotal.textContent = formatCurrency(displayedPrice); // Monthly equivalent if applicable
+    if (billingCycle === 'annually') {
+        pricingComplete.innerHTML = `${formatCurrency(totalPrice)}/year, <span>save ${formatCurrency(discount)}</span>`;
+    } else if (billingCycle === 'quarterly') {
+        pricingComplete.innerHTML = `${formatCurrency(totalPrice)}/quarter, <span>save ${formatCurrency(discount)}</span>`;
+    } else {
+        pricingComplete.textContent = ''; // No discount message for monthly billing
+    }
 
-            const employeeCount = numberOfEmployees.value;
+    pricingTotal.setAttribute('price', formatCurrency(totalPrice));
+
+    document.querySelector('#monthlyOrYearly input[value="monthly"]').disabled = (employeeCount === '1-25' || employeeCount === '26-50');
+}
+
+// Function to update available options based on billing cycle
+        function updateBillingCycle() {
             const billingCycle = [...billingCycleInputs].find(input => input.checked).value;
-            const priceData = pricingData[employeeCount] && pricingData[employeeCount][billingCycle];
+            numberOfEmployees.querySelector('option[value="1-25"]').disabled = (billingCycle === 'monthly');
+            numberOfEmployees.querySelector('option[value="26-50"]').disabled = (billingCycle === 'monthly');
+        }
 
-            if (priceData === 'Custom' || !priceData) {
-                pricingTotal.textContent = "Custom";
-                pricingTotal.setAttribute('price', "Custom");
-                if (pricingComplete) pricingComplete.textContent = '';
-                return;
-            }
+// Add event listeners
+numberOfEmployees.addEventListener('change', () => {
+    updatePrice();
+    updateBillingCycle(); // Re-check availability when employee range changes
+});
 
-            const monthlyPrice = pricingData[employeeCount]['monthly'];
-            let displayedPrice, totalPrice, discount = 0;
-
-            if (billingCycle === 'annually') {
-                totalPrice = pricingData[employeeCount][billingCycle];
-                displayedPrice = Math.round(totalPrice / 12);
-                discount = (monthlyPrice * 12) - totalPrice;
-                if (pricingComplete) pricingComplete.innerHTML = `${formatCurrency(totalPrice)}/year, <span>save ${formatCurrency(discount)}</span>`;
-            } else if (billingCycle === 'quarterly') {
-                totalPrice = pricingData[employeeCount][billingCycle];
-                displayedPrice = Math.round(totalPrice / 3);
-                discount = (monthlyPrice * 3) - totalPrice;
-                if (pricingComplete) pricingComplete.innerHTML = `${formatCurrency(totalPrice)}/quarter, <span>save ${formatCurrency(discount)}</span>`;
-            } else {
-                displayedPrice = totalPrice = monthlyPrice;
-                if (pricingComplete) pricingComplete.textContent = '';
-            }
-
-            pricingTotal.textContent = formatCurrency(displayedPrice);
-            pricingTotal.setAttribute('price', totalPrice);
-        };
-
-        // Event listeners to ensure updateAvailableOptions and updatePrice are called on every relevant change
-        billingCycleInputs.forEach(input => {
-            input.addEventListener('change', () => {
-                updateAvailableOptions();
-                updatePrice();
-            });
-        });
-
-        numberOfEmployees.addEventListener('change', () => {
-            updateAvailableOptions();
-            updatePrice();
-        });
-
-        // Initial setup
-        updateAvailableOptions();
+billingCycleInputs.forEach(input => {
+    input.addEventListener('change', () => {
         updatePrice();
+        updateBillingCycle(); // Re-check availability when billing cycle changes
     });
 });
+
+// Initial setup
+updatePrice();
+updateBillingCycle();
