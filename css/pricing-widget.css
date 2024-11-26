@@ -1,23 +1,42 @@
-/* Pricing Widget Styles */
+:root {
+    --font-family: "Poppins", sans-serif;
+    --text-color: #33B29C;
+    --secondary-text-color: #b0b0b0;
+    --background-color: #f7f7f7;
+    --highlight-color: #FFA02B;
+    --border-color: #33B29C;
+    --hover-background-color: rgb(51, 178, 156);
+}
+
+/* :root {
+    --font-family: "Sintony", sans-serif;
+    --text-color: #0B6F6B;
+    --secondary-text-color: #b0b0b0;
+    --background-color: #f7f7f7;
+    --highlight-color: #EA5353;
+    --border-color: #14807e;
+    --hover-background-color: rgb(51, 178, 156);
+} */
+
 .pricing-widget .pricing-total {
     font-size: 56px;
-    font-family: "Sintony", sans-serif;
+    font-family: var(--font-family);
     font-weight: 700;
-    color: #0B6F6B;
+    color: var(--text-color);
     line-height: 1;
 }
 
 .pricing-widget .pricing-complete {
     font-size: 14px;
-    color: #b0b0b0;
+    color: var(--secondary-text-color);
     margin-bottom: 4px;
     vertical-align: middle;
-    font-family: 'Sintony', sans-serif;
+    font-family: var(--font-family);
     font-weight: 700;
 }
 
 .pricing-widget .pricing-complete span {
-    color: #0B6F6B;
+    color: var(--text-color);
     font-weight: 700;
     display: block;
 }
@@ -37,12 +56,12 @@
 }
 
 .pricing-widget select {
-    font-family: "Sintony", sans-serif;
+    font-family: var(--font-family);
     font-size: 16px;
     font-weight: 700;
     padding: 8px 12px;
     border-radius: 50px;
-    border: 1px solid #b0b0b0;
+    border: 1px solid var(--secondary-text-color);
     background-color: transparent;
     color: #323232;
     width: 100%;
@@ -51,7 +70,7 @@
 }
 
 .pricing-widget option:hover {
-    background-color: rgb(51, 178, 156);
+    background-color: var(--hover-background-color);
 }
 
 .pricing-widget {
@@ -62,7 +81,7 @@
     display: flex;
     justify-content: center;
     border-radius: 50px;
-    border: 1px solid #14807e;
+    border: 1px solid var(--border-color);
     margin-bottom: 16px;
     max-width: 330px;
     margin: auto auto 16px;
@@ -78,17 +97,18 @@
     font-size: 13px;
     width: 100%;
     text-align: center;
-    font-family: "Sintony", sans-serif;
+    font-family: var(--font-family);
+    margin-bottom: 0;
 }
 
 .pricing-widget #monthlyOrYearly label span {
     font-size: 11px;
     font-weight: 700;
     margin-left: 4px;
-    color: #EA5353;
+    color: var(--highlight-color);
     padding: 5px 8px;
     border-radius: 50px;
-    background-color: #f7f7f7;
+    background-color: var(--background-color);
     text-transform: uppercase;
 }
 
@@ -119,4 +139,57 @@
     grid-template-columns: 1fr 1fr;
     gap: 48px;
     align-items: end;
+}
+
+@media (max-width: 768px) {
+    .pricing-widget .pricing-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .pricing-widget .pricing-total {
+        font-size: 48px;
+    }
+
+    .pricing-widget .pricing-complete {
+        font-size: 12px;
+    }
+
+    .pricing-widget select {
+        font-size: 14px;
+    }
+
+    .pricing-widget #monthlyOrYearly {
+        max-width: 100%;
+    }
+
+    .pricing-widget #monthlyOrYearly label {
+        font-size: 12px;
+    }
+
+    .pricing-widget #monthlyOrYearly label span {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pricing-widget .pricing-total {
+        font-size: 36px;
+    }
+
+    .pricing-widget .pricing-complete {
+        font-size: 10px;
+    }
+
+    .pricing-widget select {
+        font-size: 12px;
+    }
+
+    .pricing-widget #monthlyOrYearly label {
+        font-size: 10px;
+    }
+
+    .pricing-widget #monthlyOrYearly label span {
+        font-size: 8px;
+    }
 }

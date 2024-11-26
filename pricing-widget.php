@@ -1,36 +1,20 @@
 <?php
-/**
- * Plugin Name: Pricing Widget
- * Description: A shortcode-based pricing widget with flexible options to display individual sections or the full widget.
- * Version: 1.3
- * Author: Your Name
- */
-
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
-
-// Enqueue assets (CSS and JavaScript) once per page
-function pricing_widget_enqueue_assets() {
-    static $loaded = false;
-    if (!$loaded) {
-        wp_enqueue_style('pricing-widget-css', plugin_dir_url(__FILE__) . 'css/pricing-widget.css');
-        wp_enqueue_script('pricing-widget-js', plugin_dir_url(__FILE__) . 'js/pricing-widget.js', array('jquery'), null, true);
-
-        // Retrieve saved pricing data from the options
-        $pricing_data = get_option('pricing_widget_data', []);
-
-        // Localize the pricing data for JavaScript
-        wp_localize_script('pricing-widget-js', 'pricingWidgetData', $pricing_data);
-
-        $loaded = true;
-    }
+// register assets (CSS and JavaScript) once per page
+function pricing_widget_register_assets() {
+wp_register_style('pricing-widget-css', plugin_dir_url(__FILE__) . 'css/pricing-widget.css', array(), '1.0.1');
+wp_register_script('pricing-widget-js', plugin_dir_url(__FILE__) . 'js/pricing-widget.js', array('jquery'), null, true);
 }
-add_action('wp_enqueue_scripts', 'pricing_widget_enqueue_assets');
+add_action('wp_enqueue_scripts', 'pricing_widget_register_assets');
 
 // Render sections of the pricing widget
 function render_pricing_widget_section($section) {
-    switch ($section) {
-        case 'billing':
-            ?>
+// Load the assets
+wp_enqueue_style('pricing-widget-css');
+wp_enqueue_script('pricing-widget-js');
+
+switch ($section) {
+case 'billing':
+?>
 <div id="monthlyOrYearly" class="pricing-widget-section billing-section">
     <input type="radio" id="annually" name="billingCycle" value="annually" checked>
     <label for="annually">Annually <span>Save 20%</span></label>
@@ -46,7 +30,7 @@ function render_pricing_widget_section($section) {
     <select id="numberOfEmployees" name="numberOfEmployees">
         <option value="1-25">1 - 25 employees</option>
         <option value="26-50">26 - 50 employees</option>
-        <option value="51-100">51 - 100 employees</option>
+        <option value="51-100" selected>51 - 100 employees</option>
         <option value="101-200">101 - 200 employees</option>
         <option value="201-300">201 - 300 employees</option>
         <option value="301-500">301 - 500 employees</option>
@@ -73,7 +57,6 @@ function render_pricing_widget_section($section) {
 
 // Shortcode function to display the pricing widget or its parts
 function pricing_widget_shortcode($atts) {
-    pricing_widget_enqueue_assets(); // Load assets
 
     // Parse shortcode attributes
     $atts = shortcode_atts(array(
