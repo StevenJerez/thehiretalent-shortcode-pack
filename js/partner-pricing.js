@@ -1,4 +1,4 @@
-/* Partner pricing ([partner_pricing]). Each section reads its own data-config,
+/* Partner pricing calculator ([partner_pricing]). Each section reads its own data-config,
    so several instances can live on one page. Math is done in cents so that
    member prices round the same way as the PHP render. */
 (function () {
@@ -25,13 +25,12 @@
             return;
         }
 
-        var card = root.querySelector('[data-tpp-unlimited]');
-        if (!card) return;
-
+        var card = root;
         var size = card.querySelector('[data-tpp-size]');
         var billingBtns = card.querySelectorAll('[data-tpp-billing]');
         var addon = card.querySelector('[data-tpp-addon]');
-        var cta = card.querySelector('.tpp-cta');
+        // The plan buttons live in the page (Beaver Builder), outside this block.
+        var ctas = config.ctaSelector ? document.querySelectorAll(config.ctaSelector) : [];
         var q = function (sel) { return card.querySelectorAll(sel); };
 
         var state = { size: size.value, billing: 'monthly', addon: false };
@@ -74,9 +73,11 @@
             addon.setAttribute('aria-checked', state.addon ? 'true' : 'false');
 
             // Expose the choice to the signup modal / GTM.
-            cta.setAttribute('data-size', state.size);
-            cta.setAttribute('data-billing', state.billing);
-            cta.setAttribute('data-addon', state.addon ? 'integrityfirst-unlimited' : 'none');
+            Array.prototype.forEach.call(ctas, function (cta) {
+                cta.setAttribute('data-size', state.size);
+                cta.setAttribute('data-billing', state.billing);
+                cta.setAttribute('data-addon', state.addon ? 'integrityfirst-unlimited' : 'none');
+            });
         }
 
         function changed() {

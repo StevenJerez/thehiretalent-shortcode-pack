@@ -66,13 +66,20 @@ You can add the shortcode multiple times on the same page. The plugin will only 
 
 ## Partner pricing
 
-`[partner_pricing partner="dogco"]` renders a full pricing section for a partner landing page: header with the member badge, three plan cards (Essentials, Unlimited, IntegrityFirst) and a bottom callout. Used on https://discovered.ai/discovered-dogco-partnership/.
+`[partner_pricing partner="dogco"]` renders **only the calculator** of a partner's Unlimited card:
+- company size;
+- Monthly/Annually;
+- the price (list struck through, member price, "You save"; annual shows the yearly total);
+- the "Add IntegrityFirst Unlimited" switch, which multiplies the list price by `addon_multiple` before the discount.
 
-- **Unlimited card:** company size, Monthly/Annually and an "Add IntegrityFirst Unlimited" switch. It shows the regular price struck through, the member price and "You save". Annual shows the yearly total. The add-on multiplies the list price by `addon_multiple` before the discount.
-- **Prices:** `tht_pricing_tiers()` in `partner-pricing.php` holds the Discovered list prices. They are the same values as `js/pricing-widget.js`, so change both. Member prices are calculated from the partner's `discount_pct` (cents math, so $14.75 − 10% = $13.28), never typed in.
-- **No-JS state:** the server renders the initial state (first tier, monthly, add-on off), so the prices are correct before WP Rocket's delayed JS runs.
-- **Partner config:** texts, feature lists, discount, IntegrityFirst price and CTA classes live in `tht_partner_pricing_config()`. Add another partner there and use `partner="<key>"`.
-- **CTAs:** they are `<button>`s with the classes the page's UABB modals listen for (`free-plan`, `unlimited-plan`). The Unlimited CTA carries `data-size`, `data-billing` and `data-addon` with the current choice. Each change also pushes `partner_pricing_change` to `window.dataLayer`.
+It is transparent and meant to sit inside a Beaver Builder card. Headings, cards, feature lists, buttons and copy stay as normal BB modules on the page. It's used on https://discovered.ai/discovered-dogco-partnership/.
+
+- **Prices:** `tht_pricing_tiers()` in `partner-pricing.php` holds the Discovered list prices. They are the same values as `js/pricing-widget.js`, so change both. Member prices are calculated from `discount_pct` in cents, never typed in.
+- **No-JS state:** the initial state (first tier, monthly, add-on off) is rendered server-side, so the prices are correct before WP Rocket's delayed JS runs.
+- **Button data:** the elements matching `cta_selector` (`.unlimited-plan`) get `data-size`, `data-billing` and `data-addon`. Every change also pushes `partner_pricing_change` to `window.dataLayer`.
+- **New partner:** add an entry to `tht_partner_pricing_config()` and use `partner="<key>"`.
+
+`tools/dogco-layout.php` restyles the `#dogco-pricing` row of the DogCo page from the original prod layout, keeping everything as BB modules, and drops the calculator in. Run it on a draft copy first; read the header of the file.
 
 ## Files
 
