@@ -15,36 +15,30 @@ function custom_sticky_nav_shortcode() {
     ob_start();
     ?>
 <div class="custom-navbar">
-    <a href="#assessments-section">
-        <input type="radio" id="assessments" name="nav" checked>
-        <label for="assessments">Assessments</label>
-    </a>
-
     <a href="#talent-section">
-        <input type="radio" id="talent" name="nav">
-        <label for="talent">Talent</label>
+        <input type="radio" id="talent" name="nav" checked>
+        <label for="talent">Attract Talent</label>
     </a>
-
-    <a href="#talent-grader-section">
-        <input type="radio" id="talent-grader" name="nav">
-        <label for="talent-grader">Talent Grader</label>
-    </a>
-
     <a href="#automation-section">
         <input type="radio" id="automation" name="nav">
-        <label for="automation">Automation recruitment</label>
+        <label for="automation">Automated Recruitment</label>
     </a>
-
+    <a href="#assessments-section">
+        <input type="radio" id="assessments" name="nav">
+        <label for="assessments">Assessments</label>
+    </a>
     <a href="#integration-section">
         <input type="radio" id="integration" name="nav">
         <label for="integration">Integration</label>
     </a>
-
+    <a href="#talent-grader-section">
+        <input type="radio" id="talent-grader" name="nav">
+        <label for="talent-grader">Talent Grader</label>
+    </a>
     <a href="#hiring-coach-section">
         <input type="radio" id="hiring-coach" name="nav">
         <label for="hiring-coach">Hiring Coach</label>
     </a>
-
     <!-- Green underline indicator -->
     <span class="indicator"></span>
 </div>

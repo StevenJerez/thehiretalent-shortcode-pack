@@ -66,7 +66,7 @@ function updatePrice() {
     // Format and display prices
     pricingTotal.textContent = formatCurrency(displayedPrice); // Monthly equivalent if applicable
     if (billingCycle === 'annually') {
-        pricingComplete.innerHTML = `${formatCurrency(totalPrice)}/year, <span>save ${formatCurrency(discount)}</span>`;
+        pricingComplete.innerHTML = `Billed Anually (${formatCurrency(totalPrice)}/year) <span>save ${formatCurrency(discount)}</span>`;
     } else if (billingCycle === 'quarterly') {
         pricingComplete.innerHTML = `${formatCurrency(totalPrice)}/quarter, <span>save ${formatCurrency(discount)}</span>`;
     } else {

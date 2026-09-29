@@ -1,8 +1,8 @@
 <?php
 // register assets (CSS and JavaScript) once per page
 function pricing_widget_register_assets() {
-wp_register_style('pricing-widget-css', plugin_dir_url(__FILE__) . 'css/pricing-widget.css', array(), '1.0.1');
-wp_register_script('pricing-widget-js', plugin_dir_url(__FILE__) . 'js/pricing-widget.js', array('jquery'), null, true);
+wp_register_style('pricing-widget-css', plugin_dir_url(__FILE__) . 'css/pricing-widget.css', array(), '1.0.4');
+wp_register_script('pricing-widget-js', plugin_dir_url(__FILE__) . 'js/pricing-widget.js', array('jquery'), '1.0.4', true);
 }
 add_action('wp_enqueue_scripts', 'pricing_widget_register_assets');
 
@@ -28,9 +28,9 @@ case 'billing':
             ?>
 <form action="" class="pricing-widget-section employees-section">
     <select id="numberOfEmployees" name="numberOfEmployees">
-        <option value="1-25">1 - 25 employees</option>
+        <option value="1-25" selected>1 - 25 employees</option>
         <option value="26-50">26 - 50 employees</option>
-        <option value="51-100" selected>51 - 100 employees</option>
+        <option value="51-100">51 - 100 employees</option>
         <option value="101-200">101 - 200 employees</option>
         <option value="201-300">201 - 300 employees</option>
         <option value="301-500">301 - 500 employees</option>

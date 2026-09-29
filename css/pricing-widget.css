@@ -2,6 +2,7 @@
     --font-family: "Poppins", sans-serif;
     --text-color: #33B29C;
     --secondary-text-color: #b0b0b0;
+	--dark-text-color: #212323;
     --background-color: #f7f7f7;
     --highlight-color: #FFA02B;
     --border-color: #33B29C;
@@ -24,11 +25,12 @@
     font-weight: 700;
     color: var(--text-color);
     line-height: 1;
+	text-align: center;
 }
 
 .pricing-widget .pricing-complete {
-    font-size: 14px;
-    color: var(--secondary-text-color);
+    font-size: 16px;
+    color: var(--dark-text-color);
     margin-bottom: 4px;
     vertical-align: middle;
     font-family: var(--font-family);
@@ -39,6 +41,7 @@
     color: var(--text-color);
     font-weight: 700;
     display: block;
+	font-size: 16px;
 }
 
 .pricing-widget .pricing-total::after {
@@ -65,7 +68,7 @@
     background-color: transparent;
     color: #323232;
     width: 100%;
-    margin-bottom: 12px;
+    margin-bottom: 24px;
     text-transform: uppercase;
 }
 
@@ -133,14 +136,17 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
-
+/*
 .pricing-widget .pricing-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 48px;
     align-items: end;
 }
-
+*/
+.pricing-widget .pricing-col {
+	text-align: center;
+}
 @media (max-width: 768px) {
     .pricing-widget .pricing-row {
         grid-template-columns: 1fr;
@@ -152,7 +158,8 @@
     }
 
     .pricing-widget .pricing-complete {
-        font-size: 12px;
+        font-size: 16px;
+		margin-top: 12px;
     }
 
     .pricing-widget select {
@@ -178,7 +185,7 @@
     }
 
     .pricing-widget .pricing-complete {
-        font-size: 10px;
+        font-size: 14px;
     }
 
     .pricing-widget select {
