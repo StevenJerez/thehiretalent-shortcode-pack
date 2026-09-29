@@ -99,11 +99,14 @@ function tht_pp_money($cents) {
     return $rest ? $out . '.' . str_pad((string) $rest, 2, '0', STR_PAD_LEFT) : $out;
 }
 
+/** Paw print in the style of Font Awesome's "paw": four tilted toes over a wide pad. */
 function tht_pp_paw($class = '') {
     return '<svg class="tpp-paw ' . esc_attr($class) . '" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false">'
-        . '<ellipse cx="5.5" cy="5" rx="2.2" ry="2.8"/><ellipse cx="9.8" cy="3" rx="2" ry="2.5"/>'
-        . '<ellipse cx="14.2" cy="3" rx="2" ry="2.5"/><ellipse cx="18.5" cy="5" rx="2.2" ry="2.8"/>'
-        . '<path d="M12 8.5c-4.1 0-7 2.9-7 7.1 0 2.9 1.8 5.3 4.3 6.2.8.3 1.8.5 2.7.5s1.9-.2 2.7-.5c2.5-.9 4.3-3.3 4.3-6.2 0-4.2-2.9-7.1-7-7.1z"/></svg>';
+        . '<ellipse cx="3.9" cy="10.6" rx="2.2" ry="2.7" transform="rotate(-22 3.9 10.6)"/>'
+        . '<ellipse cx="8.5" cy="5.4" rx="2.4" ry="3" transform="rotate(-8 8.5 5.4)"/>'
+        . '<ellipse cx="15.5" cy="5.4" rx="2.4" ry="3" transform="rotate(8 15.5 5.4)"/>'
+        . '<ellipse cx="20.1" cy="10.6" rx="2.2" ry="2.7" transform="rotate(22 20.1 10.6)"/>'
+        . '<path d="M12 11.3c-2.4 0-4.3 1.9-5.6 4-.9 1.4-2.3 2.5-2.3 4.2 0 1.8 1.4 3.1 3.2 3.1 1.9 0 3.1-.9 4.7-.9s2.8.9 4.7.9c1.8 0 3.2-1.3 3.2-3.1 0-1.7-1.4-2.8-2.3-4.2-1.3-2.1-3.2-4-5.6-4z"/></svg>';
 }
 
 function tht_pp_features($items) {
@@ -115,8 +118,8 @@ function tht_pp_features($items) {
 }
 
 function partner_pricing_register_assets() {
-    wp_register_style('partner-pricing-css', plugin_dir_url(__FILE__) . 'css/partner-pricing.css', array(), '1.0.2');
-    wp_register_script('partner-pricing-js', plugin_dir_url(__FILE__) . 'js/partner-pricing.js', array(), '1.0.2', true);
+    wp_register_style('partner-pricing-css', plugin_dir_url(__FILE__) . 'css/partner-pricing.css', array(), '1.0.3');
+    wp_register_script('partner-pricing-js', plugin_dir_url(__FILE__) . 'js/partner-pricing.js', array(), '1.0.3', true);
 }
 add_action('wp_enqueue_scripts', 'partner_pricing_register_assets');
 
