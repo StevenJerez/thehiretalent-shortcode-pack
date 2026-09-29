@@ -78,7 +78,7 @@
     line-height: 1.6;
     color: var(--tpp-muted);
 }
-.tpp-badge {
+.tpp .tpp-badge {
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
@@ -332,7 +332,7 @@
 @media (max-width: 480px) {
     .tpp-card { padding: 26px 22px; }
     .tpp-sub { font-size: 16px; }
-    .tpp-badge { padding: 10px 18px; border-radius: 22px; }
+    .tpp .tpp-badge { padding: 10px 18px; border-radius: 22px; }
     .tpp-badge-sep { display: none; }
     .tpp-amount { font-size: 44px; }
     .tpp-member .tpp-eyebrow { letter-spacing: .14em; }

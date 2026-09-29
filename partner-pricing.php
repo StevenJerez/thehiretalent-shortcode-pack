@@ -115,8 +115,8 @@ function tht_pp_features($items) {
 }
 
 function partner_pricing_register_assets() {
-    wp_register_style('partner-pricing-css', plugin_dir_url(__FILE__) . 'css/partner-pricing.css', array(), '1.0.1');
-    wp_register_script('partner-pricing-js', plugin_dir_url(__FILE__) . 'js/partner-pricing.js', array(), '1.0.1', true);
+    wp_register_style('partner-pricing-css', plugin_dir_url(__FILE__) . 'css/partner-pricing.css', array(), '1.0.2');
+    wp_register_script('partner-pricing-js', plugin_dir_url(__FILE__) . 'js/partner-pricing.js', array(), '1.0.2', true);
 }
 add_action('wp_enqueue_scripts', 'partner_pricing_register_assets');
 
