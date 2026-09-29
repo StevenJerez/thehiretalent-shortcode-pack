@@ -61,8 +61,8 @@ function tht_pp_money($cents) {
 }
 
 function partner_pricing_register_assets() {
-    wp_register_style('partner-pricing-css', plugin_dir_url(__FILE__) . 'css/partner-pricing.css', array(), '1.1.0');
-    wp_register_script('partner-pricing-js', plugin_dir_url(__FILE__) . 'js/partner-pricing.js', array(), '1.1.0', true);
+    wp_register_style('partner-pricing-css', plugin_dir_url(__FILE__) . 'css/partner-pricing.css', array(), '1.1.1');
+    wp_register_script('partner-pricing-js', plugin_dir_url(__FILE__) . 'js/partner-pricing.js', array(), '1.1.1', true);
 }
 add_action('wp_enqueue_scripts', 'partner_pricing_register_assets');
 
@@ -134,7 +134,7 @@ function partner_pricing_shortcode($atts) {
 
     <div class="tpp-addon">
         <div class="tpp-addon-text">
-            <p class="tpp-eyebrow tpp-eyebrow--dark" id="<?php echo esc_attr($uid); ?>-addon"><?php echo esc_html($c['addon_title']); ?></p>
+            <p class="tpp-addon-title" id="<?php echo esc_attr($uid); ?>-addon"><?php echo esc_html($c['addon_title']); ?></p>
             <p class="tpp-small"><?php echo esc_html($c['addon_text']); ?></p>
         </div>
         <button type="button" class="tpp-switch" role="switch" aria-checked="false" aria-labelledby="<?php echo esc_attr($uid); ?>-addon" data-tpp-addon><span></span></button>
