@@ -64,6 +64,16 @@ The shortcode has a `section` attribute, which allows you to specify which parts
 
 You can add the shortcode multiple times on the same page. The plugin will only load the necessary CSS and JavaScript once to optimize performance.
 
+## Partner pricing
+
+`[partner_pricing partner="dogco"]` renders a full pricing section for a partner landing page: header with the member badge, three plan cards (Essentials, Unlimited, IntegrityFirst) and a bottom callout. Used on https://discovered.ai/discovered-dogco-partnership/.
+
+- **Unlimited card:** company size, Monthly/Annually and an "Add IntegrityFirst Unlimited" switch. It shows the regular price struck through, the member price and "You save". Annual shows the yearly total. The add-on multiplies the list price by `addon_multiple` before the discount.
+- **Prices:** `tht_pricing_tiers()` in `partner-pricing.php` holds the Discovered list prices. They are the same values as `js/pricing-widget.js`, so change both. Member prices are calculated from the partner's `discount_pct` (cents math, so $14.75 − 10% = $13.28), never typed in.
+- **No-JS state:** the server renders the initial state (first tier, monthly, add-on off), so the prices are correct before WP Rocket's delayed JS runs.
+- **Partner config:** texts, feature lists, discount, IntegrityFirst price and CTA classes live in `tht_partner_pricing_config()`. Add another partner there and use `partner="<key>"`.
+- **CTAs:** they are `<button>`s with the classes the page's UABB modals listen for (`free-plan`, `unlimited-plan`). The Unlimited CTA carries `data-size`, `data-billing` and `data-addon` with the current choice. Each change also pushes `partner_pricing_change` to `window.dataLayer`.
+
 ## Files
 
 ### Plugin Structure
