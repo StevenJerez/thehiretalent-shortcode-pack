@@ -264,7 +264,8 @@ if ( ! $row ) {
 
 // Section header (column m6rdsbtowpl1).
 $head_col = 'm6rdsbtowpl1';
-$del( 'ye6a3ib17n4l' ); // DogCo logo above the title; the design uses an eyebrow instead.
+// DogCo logo stays on top, above the eyebrow and the title.
+$set( 'ye6a3ib17n4l', array( 'align' => 'center', 'margin_top' => '0', 'margin_bottom' => '24' ) );
 $eyebrow = $new( 'rich-text', $head_col, array_merge( $margins0, array(
 	'text'       => '<p>DogCo Member Pricing</p>',
 	'color'      => $C['cta'],
@@ -303,8 +304,7 @@ $set( 'umqr8wjxl0dt', array_merge( $margins0, array(
 	'padding_top' => '12', 'padding_bottom' => '12', 'padding_left' => '24', 'padding_right' => '24',
 	'margin_bottom' => '56',
 ) ) );
-$order( $head_col, array( $eyebrow, 't0h9gnkyxosm', '0jh1vd9uq87z', 'umqr8wjxl0dt', 'k2htybgdufcn' ) );
-$data['k2htybgdufcn']->position = 4;
+$order( $head_col, array( 'ye6a3ib17n4l', $eyebrow, 't0h9gnkyxosm', '0jh1vd9uq87z', 'umqr8wjxl0dt', 'k2htybgdufcn' ) );
 
 // Cards column (6v158hpwls9c): drop the old billing toggle above the cards.
 $cards_col = '6v158hpwls9c';
