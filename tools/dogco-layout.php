@@ -410,6 +410,29 @@ $list( 'vlq0pi3nsbm6', array(
 $ifc = 'evr0jfpc9w8t';
 $order( $ifc, array( 'u8av4l7j5wi2', $sep( $ifc ), $if_price, $sep( $ifc ), 'dnhque1rg6x7', 'l75m4bed1ytn', 'daqoxjty9m17', 'xza02qug39my', 'vlq0pi3nsbm6' ) );
 
+// Plan buttons -> DogCo form modals (set up on prod 2026-09-29/30). Each modal loads a
+// DogCo saved module with its own Gravity Form: 60114 Essentials (GF 109),
+// 60115 Unlimited (GF 110), 60116 IntegrityFirst (GF 111). The old SEAA Unlimited
+// modal (a270…) is reused for IntegrityFirst so no button opens two modals.
+$set( 'hneuj1daisc6', array( 'class' => 'essentials-plan' ) );
+$set( 'y8zcn6euaqxb', array( 'class' => 'unlimited-plan' ) );
+$set( 'dnhque1rg6x7', array( 'class' => 'integrityfirst-plan' ) );
+foreach ( array(
+	'pzsxybtjkg6u' => array( '.essentials-plan', '60114', 'DogCo Form - Essentials Plan' ),
+	'lz23jhapucs0' => array( '.unlimited-plan', '60115', 'DogCo Form - Unlimited Plan' ),
+	'a2706doysh1q' => array( '.integrityfirst-plan', '60116', 'DogCo Form - IntegrityFirst' ),
+) as $modal => $cfg ) {
+	$set( $modal, array(
+		'modal_on'          => 'custom',
+		'modal_custom'      => $cfg[0],
+		'content_type'      => 'saved_modules',
+		'ct_saved_modules'  => $cfg[1],
+		'ct_saved_rows'     => '',
+		'ct_page_templates' => '7796',
+		'node_label'        => $cfg[2],
+	) );
+}
+
 // Bottom callout, between the cards and "Need help choosing?".
 $callout = $new( 'box', $cards_col, array(
 	'layout'         => 'flex',
