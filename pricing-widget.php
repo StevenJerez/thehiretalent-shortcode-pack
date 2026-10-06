@@ -1,8 +1,8 @@
 <?php
 // register assets (CSS and JavaScript) once per page
 function pricing_widget_register_assets() {
-wp_register_style('pricing-widget-css', plugin_dir_url(__FILE__) . 'css/pricing-widget.css', array(), '1.0.4');
-wp_register_script('pricing-widget-js', plugin_dir_url(__FILE__) . 'js/pricing-widget.js', array('jquery'), '1.0.4', true);
+wp_register_style('pricing-widget-css', plugin_dir_url(__FILE__) . 'css/pricing-widget.css', array(), '1.0.5');
+wp_register_script('pricing-widget-js', plugin_dir_url(__FILE__) . 'js/pricing-widget.js', array('jquery'), '1.0.5', true);
 }
 add_action('wp_enqueue_scripts', 'pricing_widget_register_assets');
 
