@@ -1,0 +1,143 @@
+/* Bundle Widget Styles */
+.bundle-widget .bundle-total {
+    font-size: 56px;
+    font-family: "Sintony", sans-serif;
+    font-weight: 700;
+    margin-top: 20px;
+    color: #0B6F6B;
+    line-height: 1;
+}
+
+.bundle-widget .bundle-total::after {
+    content: '/per credit';
+    font-size: 30px;
+    margin-left: 8px;
+    font-family: "Sintony", sans-serif;
+}
+
+.bundle-widget select {
+    font-family: "Sintony", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 50px;
+    border: 1px solid #b0b0b0;
+    background-color: transparent;
+    color: #323232;
+    width: 100%;
+    margin-bottom: 0px;
+    margin-top: 20px;
+}
+
+.bundle-widget option:hover {
+    background-color: rgb(51, 178, 156);
+}
+
+.bundle-widget {
+    margin: 0 auto;
+}
+
+/* BundleType container */
+.bundle-widget .bundle-type {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #D1D4DD;
+    /* Gray bottom border */
+}
+
+/* Styling for each label */
+.bundle-widget .bundle-type label {
+    padding: 8px 8px;
+    margin-bottom: 5px;
+    background-color: transparent;
+    color: #24292e;
+    cursor: pointer;
+    font-size: 18px;
+    text-align: center;
+    font-family: "Sintony", sans-serif;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+    position: relative;
+}
+
+/* Styling for the animated line */
+.bundle-widget .active-line {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 50%;
+    /* Half width of the container to match each label */
+    height: 4px;
+    background-color: #14807e;
+    transition: transform 0.3s ease;
+    /* Smooth transition */
+}
+
+/* Style for selected label text */
+.bundle-widget .bundle-type input[type="radio"]:checked+label {
+    font-weight: 700;
+    color: #14807e;
+}
+
+/* Move the line under the second label when the second radio is checked */
+.bundle-widget .bundle-type input[type="radio"]:checked+label+.active-line {
+    transform: translateX(100%);
+}
+
+.bundle-widget .bundle-type input[type="radio"] {
+    accent-color: #14807e;
+    margin: 8px;
+}
+
+.bundle-widget .bundle-type input[type="radio"]:disabled+label {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .bundle-widget .bundle-total {
+        font-size: 40px;
+    }
+
+    .bundle-widget .bundle-total::after {
+        font-size: 20px;
+    }
+
+    .bundle-widget select {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    .bundle-widget .bundle-type label {
+        font-size: 16px;
+    }
+
+    .bundle-widget .active-line {
+        width: 50%;
+    }
+
+    .bundle-widget .bundle-type label {
+        width: 100%;
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .bundle-widget .bundle-total {
+        font-size: 30px;
+    }
+
+    .bundle-widget .bundle-total::after {
+        font-size: 16px;
+    }
+
+    .bundle-widget select {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    .bundle-widget .bundle-type label {
+        font-size: 14px;
+    }
+}

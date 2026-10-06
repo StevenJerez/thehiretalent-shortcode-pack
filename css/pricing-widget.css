@@ -8,8 +8,8 @@
 }
 
 .pricing-widget .pricing-complete {
-    font-size: 14px;
-    color: #b0b0b0;
+    font-size: 16px;
+    color: #212323;
     margin-bottom: 4px;
     vertical-align: middle;
     font-family: 'Sintony', sans-serif;
@@ -20,6 +20,7 @@
     color: #0B6F6B;
     font-weight: 700;
     display: block;
+	font-size: 16px;
 }
 
 .pricing-widget .pricing-total::after {
@@ -79,6 +80,7 @@
     width: 100%;
     text-align: center;
     font-family: "Sintony", sans-serif;
+    margin-bottom: 0;
 }
 
 .pricing-widget #monthlyOrYearly label span {
@@ -113,10 +115,67 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
-
+/*
 .pricing-widget .pricing-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 48px;
     align-items: end;
+}
+*/
+.pricing-widget .pricing-col {
+	text-align: center;
+}
+@media (max-width: 768px) {
+    .pricing-widget .pricing-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .pricing-widget .pricing-total {
+        font-size: 48px;
+    }
+
+    .pricing-widget .pricing-complete {
+        font-size: 16px;
+		margin-top: 12px;
+    }
+
+    .pricing-widget select {
+        font-size: 14px;
+    }
+
+    .pricing-widget #monthlyOrYearly {
+        max-width: 100%;
+    }
+
+    .pricing-widget #monthlyOrYearly label {
+        font-size: 12px;
+    }
+
+    .pricing-widget #monthlyOrYearly label span {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pricing-widget .pricing-total {
+        font-size: 36px;
+    }
+
+    .pricing-widget .pricing-complete {
+        font-size: 10px;
+    }
+
+    .pricing-widget select {
+        font-size: 12px;
+    }
+
+    .pricing-widget #monthlyOrYearly label {
+        font-size: 10px;
+    }
+
+    .pricing-widget #monthlyOrYearly label span {
+        font-size: 8px;
+    }
 }
